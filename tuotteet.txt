@@ -1,0 +1,9 @@
+123;Virveli;57
+234;Mato-onki;5
+456;Koukku;0.2;
+567;Siima;8
+111;Vapa;15
+222;Uistin;2.1
+333;Haavi;23
+444;Nostokoukku;21
+555;Nostokoukku;24
