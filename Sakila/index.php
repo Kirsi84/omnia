@@ -22,6 +22,7 @@ ja numeeriset arvot ovat oikeasti numeerisia.
 
 Jos haluat lisähaastetta, hae kieliarvot tietokannasta sekä lisää samalla tavalla
  pudotusvalikko genreille. Lisäksi special features voisi tekstikentän sijaan olla ryhmä valintaruutuja.
+Lisätty kommentti/test github
 -->
 
 <html>
