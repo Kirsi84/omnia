@@ -1,5 +1,6 @@
 <?php
     require('funktiot.php');
+    //$_POST['virheet']['kuvaus'] = "Kuvaus on jo olemassa";
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +36,7 @@ Jos haluat lisähaastetta, hae kieliarvot tietokannasta sekä lisää samalla ta
         <br>
      
         <!-- <form action="db_palvelin.php" method="post">-->
-        <form method="post"> 
+        <form action="create.php" method="post" id="lomake"> 
 
             <fieldset>
                 <legend>Lisää elokuvan tiedot</legend>
@@ -44,10 +45,11 @@ Jos haluat lisähaastetta, hae kieliarvot tietokannasta sekä lisää samalla ta
                 <input type ="text" id="nimi" name="nimi" class="txtBox" placeholder="nimi" required><br><br>
 
                 <label for  ="kuvaus" class="lbTitle">Kuvaus:</label>
-                <input type="text" id="kuvaus" name="kuvaus" class="txtBox" placeholder="kuvaus" required><br><br>
+                <input type="text" id="kuvaus" name="kuvaus" class="txtBox" placeholder="kuvaus" value="<?php echo $_POST['kuvaus'];?>" required><br><br>
+                <!--<div class="virheilmoitus"><?php echo $_POST['virheet']['kuvaus'];?></div>-->
                 
                 <label for  ="julkaisuvuosi" class="lbTitle">Julkaisuvuosi:</label>
-                <input type="number" min="1900" max="3000" id="julkaisuvuosi" name="julkaisuvuosi" class="txtBox" placeholder="julkaisuvuosi" required><br><br>
+                <input type="number" min="1901" max="2155" id="julkaisuvuosi" name="julkaisuvuosi" class="txtBox" placeholder="julkaisuvuosi" required><br><br>
 
                 <!-- <label class="lbTitle">Kieli:</label> -->
                 <!-- <input type="text" id="kieli" name="kieli" class="txtBox" placeholder="kieli"> -->
@@ -68,14 +70,14 @@ Jos haluat lisähaastetta, hae kieliarvot tietokannasta sekä lisää samalla ta
                 <label for  ="ikaraja" class="lbTitle">Ikäraja:</label>
                 <!-- <input type="text" id="ikaraja" name="ikaraja" class="txtBox" placeholder="ikäraja" required><br><br> -->
 
-                <input list="ikaraja" name="ikaraja" required>
-                <datalist id="ikaraja"  required>
-                    <option value="G">
-                    <option value="PG">
-                    <option value="PG-13">
-                    <option value="R">    
-                    <option value="NC-17">                           
-                </datalist>
+                <!--<input list="ikaraja" name="ikaraja" required>-->
+                <select id="ikaraja"  name="ikaraja" required>
+                    <option value="G">G</option>
+                    <option value="PG">PG</option>
+                    <option value="PG-13">PG-13</option>
+                    <option value="R">R</option>    
+                    <option value="NC-17">NC-17</option>                           
+                </select>
 
                 <br><br>
 

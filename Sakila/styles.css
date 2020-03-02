@@ -1,4 +1,7 @@
-
+#lomake {
+    max-width:600px;
+    
+} 
 fieldset {
     background-color: gainsboro;
     padding-top: 20px;    

@@ -2,10 +2,29 @@
 
 function callFunctions($mode)
 {
-    $palvelin   = "localhost";
-    $kayttaja   = "root";  // tämä on tietokannan käyttäjä, ei tekemäsi järjestelmän
-    $salasana   = "";
-    $tietokanta = "sakila";
+    $local = ($_SERVER['REMOTE_ADDR']=='127.0.0.1' || $_SERVER['REMOTE_ADDR']=='::1');
+    
+    // 
+    // foreach ($_SERVER  as $k => $v)
+    // {
+    //     echo "key: $k, value: $v <br>";       
+    //     
+    // }
+    // 
+    // var_export ($_SERVER);
+    if (!$local )
+    {
+        $palvelin   = "127.0.0.1:53181";
+        $kayttaja   = "azure";  // tämä on tietokannan käyttäjä, ei tekemäsi järjestelmän
+        $salasana   = "6#vWHD_$";
+        $tietokanta = "sakila";
+    }
+    else {
+        $palvelin   = "localhost";
+        $kayttaja   = "root";  // tämä on tietokannan käyttäjä, ei tekemäsi järjestelmän
+        $salasana   = "";
+        $tietokanta = "sakila";
+     }
 
     $con = mysqli_connect($palvelin, $kayttaja, $salasana, $tietokanta);
     if (mysqli_connect_errno()) {
@@ -99,26 +118,43 @@ function fetchFilms( $con)
         
     if ($category != 0)
     {
-        $sql =  
-        "SELECT f.film_id, f.title, f.description, f.release_year, f.rating, c.name as categoryname FROM film f, category c ".
-        "WHERE UPPER(f.title) LIKE '%$nimi%' AND c.category_id = '$category'  AND " .
-        "f.film_id IN (SELECT fc.film_id FROM film_category fc WHERE fc.film_id = f.film_id) ORDER BY title";
+        // $sql =  
+        // "SELECT f.film_id, f.title, f.description, f.release_year, f.rating, c.name as categoryname FROM film f, category c ".
+        // "WHERE UPPER(f.title) LIKE '%$nimi%' AND c.category_id = '$category'  AND " .
+        // "f.film_id IN (SELECT fc.film_id FROM film_category fc WHERE fc.film_id = f.film_id) ORDER BY title";
+        
+         $sql =  
+        "SELECT f.film_id, f.title, f.description, f.release_year, f.rating, c.name as categoryname FROM film f" . 
+        " INNER JOIN film_category fc ON fc.film_id = f.film_id INNER JOIN category c ON c.category_id = fc.category_id".
+        " WHERE UPPER(f.title) LIKE '%$nimi%' AND fc.category_id = '$category' ORDER BY title";
+        
+        // echo $sql ;
+        // exit;
+        
     }
     else //no category selected
     {
         $sql =
-        "SELECT f.film_id, f.title, f.description, f.release_year, f.rating, c.name as categoryname FROM film f, category c ".
-        "WHERE UPPER(f.title) LIKE '%$nimi%' AND  " .
-        "f.film_id IN (SELECT fc.film_id FROM film_category fc WHERE fc.film_id = f.film_id) " .
-
-        "UNION " .
-
-        "SELECT f.film_id, f.title, f.description, f.release_year, f.rating, '' as categoryname FROM film f, category c ".
-        "WHERE UPPER(f.title) LIKE '%$nimi%' AND  " .
-        "f.film_id NOT IN (SELECT fc.film_id FROM film_category fc WHERE fc.film_id = f.film_id) " .       
-        
-        "ORDER BY title";
+        // "SELECT f.film_id, f.title, f.description, f.release_year, f.rating, c.name as categoryname FROM film f, category c ".
+        // "WHERE UPPER(f.title) LIKE '%$nimi%' AND  " .
+        // "f.film_id IN (SELECT fc.film_id FROM film_category fc WHERE fc.film_id = f.film_id) " .
+         "SELECT f.film_id, f.title, f.description, f.release_year, f.rating, c.name as categoryname FROM film f" . 
+        " LEFT JOIN film_category fc ON fc.film_id = f.film_id LEFT JOIN category c ON c.category_id = fc.category_id".
+        " WHERE UPPER(f.title) LIKE '%$nimi%' ORDER BY title";
+    //  echo $sql ;
+    //     exit;
+// 
+//         "UNION " .
+// 
+//         "SELECT f.film_id, f.title, f.description, f.release_year, f.rating, '' as categoryname FROM film f, category c ".
+//         "WHERE UPPER(f.title) LIKE '%$nimi%' AND  " .
+//         "f.film_id NOT IN (SELECT fc.film_id FROM film_category fc WHERE fc.film_id = f.film_id) " .       
+//         
+//         "ORDER BY title";
     }
+    
+      
+       
 
     $result = mysqli_query($con, $sql);
     
@@ -160,16 +196,19 @@ function createFilm($con)
     $rental_duration    = (int)$_POST['vuokraaika'];
   
     $rental_rate        = (double) $_POST['vuokrahinta'] ;
-    $rental_rate        = str_replace(',', '.', $rental_rate); //commas to points
+  //  $rental_rate        = str_replace(',', '.', $rental_rate); //commas to points
      
     //echo "test1: $rental_rate"; 
 
     $length             = (int)$_POST['pituus']; 
    
     $replacement_cost   = (double)$_POST['korvaushinta'] ;
-    $replacement_cost   = str_replace(',', '.', $replacement_cost); //commas to points
+    
+    // echo "replacement_cost: $replacement_cost"; 
+    // exit;
+   // $replacement_cost   = str_replace(',', '.', $replacement_cost); //commas to points
 
-    //echo "test2: $rental_rate"; 
+   // echo "test2: $rental_rate"; 
 
     $rating             = trim(strip_tags( $_POST['ikaraja'] ));   
     $rating             = mysqli_real_escape_string($con, $rating);
