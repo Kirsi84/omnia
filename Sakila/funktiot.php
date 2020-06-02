@@ -14,9 +14,9 @@ function callFunctions($mode)
     // var_export ($_SERVER);
     if (!$local )
     {
-        $palvelin   = "127.0.0.1:53181";
-        $kayttaja   = "azure";  // tämä on tietokannan käyttäjä, ei tekemäsi järjestelmän
-        $salasana   = "6#vWHD_$";
+        $palvelin   = "";
+        $kayttaja   = "";  // tämä on tietokannan käyttäjä, ei tekemäsi järjestelmän
+        $salasana   = "";
         $tietokanta = "sakila";
     }
     else {
